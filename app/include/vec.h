@@ -22,7 +22,7 @@ class Vec3 {
       if (i==2) return z;
       return 0.0;
     }
-    float dist(const Vec3& v) { return sqrt(pow(v.x-x, 2) + pow(v.y-y, 2) + pow(v.z-z, 2)); }
+    float L2(const Vec3& v) { return sqrt(pow(v.x-x, 2) + pow(v.y-y, 2) + pow(v.z-z, 2)); }
     void pVec(void) { std::cout.precision(3); std::cout << std::fixed << '[' << x << ", " << y << ", " << z << "]\n"; }
 };
 

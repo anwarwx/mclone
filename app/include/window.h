@@ -2,6 +2,7 @@
 #define WINDOW_H_
 
 #include <iostream>
+#include "glad.h"
 #include "glfw3.h"
 
 class Window {
