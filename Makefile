@@ -8,6 +8,8 @@ LIBS = -L $(LIB_DIR) -lglfw3 -framework Cocoa -framework OpenGL -framework IOKit
 
 BUILD_NAME = mclone
 
+all: build run
+
 build: clean
 	mkdir -p build
 	$(CXX) -o build/$(BUILD_NAME) $(SRC) $(LIBS)

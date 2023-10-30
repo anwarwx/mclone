@@ -12,7 +12,8 @@ int main() {
     return 1;
   }
 
-  Shader shader; shader.run();
+  Shader shdr;
+  shdr.run();
 
   glViewport(0, 0, glfwWindow.gWidth(), glfwWindow.gHeight());
   while (!glfwWindowShouldClose(glfwWindow.gWin())) {
@@ -21,14 +22,12 @@ int main() {
     glClearColor(0.1, 0.2, 0.3, 1.0);
     glClear(GL_COLOR_BUFFER_BIT);
 
-    glUseProgram(shader.gProgram());
-    glBindVertexArray(shader.gVAO());
-    glDrawArrays(GL_TRIANGLES, 0, 3);
+    shdr.draw();
 
     glfwSwapBuffers(glfwWindow.gWin());
     glfwPollEvents();
   }
-  shader.free();
+  shdr.free();
   glfwTerminate();
 
   std::cout << "-- END --\n";

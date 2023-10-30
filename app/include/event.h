@@ -23,11 +23,11 @@ class Event {
   private:
     explicit Event() {}
     std::map<int, std::function<void(GLFWwindow*)>> f = {
-    {
-      GLFW_KEY_ESCAPE,
-      [this](GLFWwindow* w) { pEvent("PRESSED", "ESC"); glfwSetWindowShouldClose(w, GL_TRUE); }
-    }
-  };
+      {
+        GLFW_KEY_ESCAPE,
+        [this](GLFWwindow* w) { pEvent("PRESSED", "ESC"); glfwSetWindowShouldClose(w, GL_TRUE); }
+      }
+    };
 };
 
 #endif // EVENT_H_

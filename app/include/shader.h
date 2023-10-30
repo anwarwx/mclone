@@ -41,6 +41,7 @@ class Shader {
 
     unsigned int gProgram(void) { return p; }
     unsigned int gVAO(void) { return VAO; }
+    unsigned int gVBO(void) { return VBO; }
 
     void add(unsigned int s) { ss.push_back(s); }
 
@@ -99,6 +100,12 @@ class Shader {
 
       glBindBuffer(GL_ARRAY_BUFFER, 0);
       glBindVertexArray(0);
+    }
+
+    void draw(void) {
+      glUseProgram(p);
+      glBindVertexArray(VAO);
+      glDrawArrays(GL_TRIANGLES, 0, 3);
     }
 
     void free(void) {
