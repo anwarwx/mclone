@@ -5,7 +5,7 @@ Window::Window(int w_, int h_, const char* t_) : w(w_), h(h_), t(t_) {}
 
 bool Window::cWin(void) {
   if (!glfwInit()) {
-    std::cout << "error: glfwInit()\n";
+    std::cout << "[!] glfwInit()\n";
     return false;
   }
 
@@ -16,7 +16,7 @@ bool Window::cWin(void) {
 
   win = glfwCreateWindow(w, h, t, NULL, NULL);
   if (!win) {
-    std::cout << "error: glfwCreateWindow()\n";
+    std::cout << "[!] glfwCreateWindow()\n";
     glfwTerminate();
     return false;
   }

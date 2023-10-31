@@ -8,7 +8,7 @@ int main() {
   if (!glfwWindow.cWin()) return 1;
 
   if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress)) {
-    std::cout << "[!] ERROR GLAD" << std::endl;
+    std::cout << "[!] gladLoadGLLoader()" << std::endl;
     return 1;
   }
 

@@ -22,26 +22,39 @@ const char *fsrc = R"(
   }
 )";
 
+#define V_SIZE 6
+
+struct Vertex {
+  Vec3 pos;
+};
+
+struct Shape {
+  Vertex v[V_SIZE];
+  unsigned int VAO;
+  unsigned int VBO;
+};
+
 class Shader {
   private:
     std::vector<unsigned int> ss;
-    unsigned int p, VBO, VAO;
+    unsigned int p;
     int success;
     char info[512];
 
-    float v[9]  = {
-      -0.5f, -0.5f, 0.0f, // left  
-      0.5f, -0.5f, 0.0f, // right 
-      0.0f,  0.5f, 0.0f  // top   
-    }; 
+    Shape s = {
+      {
+        {Vec3(-0.5, -0.5)}, {Vec3(0.5, -0.5)}, {Vec3(0.0, 0.5)},
+        {s.v[0].pos+Vec3(0.5, 1.0)}, {s.v[1].pos+Vec3(0.5, 1.0)}, {s.v[2].pos+Vec3(0.5, -1.0)}
+      }
+    };
 
   public:
     Shader() {}
     ~Shader() {}
 
     unsigned int gProgram(void) { return p; }
-    unsigned int gVAO(void) { return VAO; }
-    unsigned int gVBO(void) { return VBO; }
+    unsigned int gVAO(void) { return s.VAO; }
+    unsigned int gVBO(void) { return s.VBO; }
 
     void add(unsigned int s) { ss.push_back(s); }
 
@@ -80,7 +93,7 @@ class Shader {
 
       if (!success) {
         glGetProgramInfoLog(p, 512, NULL, info);
-        std::cout << "[!] ERROR PROGRAM LINKING" << ": " << info << '\n';
+        std::cout << "[!] glLinkProgram()" << ": " << info << '\n';
         return 1;
       }
       for (auto& s : ss) glDeleteShader(s);
@@ -88,14 +101,14 @@ class Shader {
     }
 
     void setup(void) {
-      glGenVertexArrays(1, &VAO);
-      glGenBuffers(1, &VBO);
-      
-      glad_glBindVertexArray(VAO);
-      glBindBuffer(GL_ARRAY_BUFFER, VBO);
-      glBufferData(GL_ARRAY_BUFFER, sizeof(v), v, GL_STATIC_DRAW);
+      glGenVertexArrays(1, &s.VAO);
+      glad_glBindVertexArray(s.VAO);
 
-      glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3*sizeof(float), (void*)0);
+      glGenBuffers(1, &s.VBO);
+      glBindBuffer(GL_ARRAY_BUFFER, s.VBO);
+      glBufferData(GL_ARRAY_BUFFER, sizeof(Vertex)*V_SIZE, s.v, GL_STATIC_DRAW);
+
+      glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)offsetof(Vertex, pos));
       glEnableVertexAttribArray(0);
 
       glBindBuffer(GL_ARRAY_BUFFER, 0);
@@ -104,13 +117,13 @@ class Shader {
 
     void draw(void) {
       glUseProgram(p);
-      glBindVertexArray(VAO);
-      glDrawArrays(GL_TRIANGLES, 0, 3);
+      glBindVertexArray(s.VAO);
+      glDrawArrays(GL_TRIANGLES, 0, V_SIZE);
     }
 
     void free(void) {
-      glDeleteVertexArrays(1, &VAO);
-      glDeleteBuffers(1, &VBO);
+      glDeleteVertexArrays(1, &s.VAO);
+      glDeleteBuffers(1, &s.VBO);
       glDeleteProgram(p);
     }
 };
